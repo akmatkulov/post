@@ -11,8 +11,14 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="container">
+      <%= render partial: "shared/header" %>
+      <% flash.each do |name, message| %>
+        <div class="alert <%= bootstrap_class_for(name) %>">
+            <%= message %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>
