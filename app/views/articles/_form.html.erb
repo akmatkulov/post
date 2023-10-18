@@ -1,0 +1,16 @@
+<div class="card">
+  <h5 class="card-header"><%= yield(:header_title) %></h5>
+  <div class="card-body">
+    <%= form_with model: @article do |f| %>
+      <div class="mb-3">
+        <%= f.label :title, for: "exampleFormControlInput1", class: "form-label" %>
+        <%= f.text_field :title, class: "form-control", id: "exampleFormControlInput1" %>
+      </div>
+      <div class="mb-3">
+        <%= f.label :body, for: "exampleFormControlTextarea1", class: "form-label" %>
+        <%= f.text_area :body, class: "form-control", id: "exampleFormControlTextarea1", rows: "3" %>
+      </div>
+      <%= f.submit "Submit", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
