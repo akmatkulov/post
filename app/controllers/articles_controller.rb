@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
-  # before_action :check_user?, only: [:update]
+  before_action :check_user, only: [:update, :destroy]
 
   def index
     @article = Article.all
@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
     @article = Article.new
   end
 
-  def creat
+  def create
     @new_article = current_user.articles.build(article_params)
     if @new_article.save
       redirect_to articles_url
@@ -27,21 +27,14 @@ class ArticlesController < ApplicationController
   end
 
   def update
-
-    @article = Article.find(params[:id])
-    if check_user?(@article)
-      if @article.update(article_params)
-        redirect_to article_path(@article)
-      else
-        render :edit
-      end
+    if @article.update(article_params)
+      redirect_to article_path(@article)
     else
       render :edit
     end
   end
 
   def destroy
-    @article = Article.find(params[:id])
     @article.destroy
     redirect_to articles_url
   end
@@ -51,8 +44,9 @@ class ArticlesController < ApplicationController
       params.require(:article).permit(:user_id, :title, :body)
     end
 
-    def check_user?(user)
-      user.user_id == current_user.id
+    def check_user
+      @article = current_user.articles.find_by(id: params[:id])
+      redirect_to root_url if @article.nil?
     end
 
 end
